@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Ratchet template page</title>
+
+    <!-- Sets initial viewport load and disables zooming  -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+
+    <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!-- Set resources base path -->
+    <base href="../../" target="_blank">
+
+    <!-- Include the compiled Ratchet CSS -->
+    <link href="css/ratchet.css" rel="stylesheet">
+      
+    <!-- Optionally, include either the iOS or Android theme -->
+    <link href="css/ratchet-theme-ios.css" rel="stylesheet">
+
+    <!-- extra pack icons -->
+    <!-- http://themes-pixeden.com/font-demos/7-stroke/index.html -->
+    <link href="fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css" rel="stylesheet">
+    <!-- Optional - Adds useful class to manipulate icon font display -->
+    <link rel="stylesheet" href="fonts/pe-icon-7-stroke/css/helper.css">
+      
+    <!-- app style  -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- Include the compiled Ratchet JS -->
+    <script src="js/ratchet.js"></script>
+  </head>
+  <body>
+
+    <!-- Make sure all your bars are the first things in your <body> -->
+    <header class="bar bar-nav">
+      <a class="btn btn-link btn-nav pull-left" href="tpl/flight/list.html" data-transition="slide-out">
+        <span class="icon pe-7s-back"></span>
+        <!-- List -->
+      </a>
+      <h1 class="title"><img class="icon center brand-top-logo" src="img/logo.png" alt="awali travels"></h1>
+    </header>
+
+    <div class="bar bar-standard bar-header-secondary bar-list-info">
+      <span class="breadcrump">Flight info</span>
+    </div>
+
+    <div class="content">
+    <form action="#" method="post">
+      <ul class="table-view">
+
+        <!-- element -->
+        <!-- departure route -->
+        <li class="table-view-cell table-view-divider">
+          <i class="pe-7s-paper-plane"></i> 
+          <span class="flight-title">Paris > Berlin</span>
+        </li>
+        <li class="table-view-cell media">
+          <img class="media-object pull-left" src="http://placehold.it/48x48" alt="tarom">
+          <div class="media-body flight-route-item">
+            <span class="flight-title">ORY (paris) > IST (istanbul)</span>
+            <p class="flight-info">08:45 > 10:25 (17 apr)</p>
+            <p class="flight-info">cls: Y | no: AB830121 | gate: 21</p>
+          </div>
+          <img class="media-object pull-left" src="http://placehold.it/48x48" alt="tarom">
+          <div class="media-body flight-route-item">
+            <span class="flight-title">IST (istanbul) > TXL (berlin)</span>
+            <p class="flight-info">08:45 > 10:25 (17 apr)</p>
+            <p class="flight-info">cls: Y | no: AB830121 | gate: 21</p>
+          </div>
+        </li>
+        <li class="table-view-cell table-view-divider">
+          <i class="pe-7s-paper-plane pe-rotate-180"></i> 
+          <span class="flight-title">Berlin > Paris</span>
+        </li>
+        <li class="table-view-cell media">
+          <img class="media-object pull-left" src="http://placehold.it/48x48" alt="tarom">
+          <div class="media-body flight-route-item">
+            <span class="flight-title">TXL (berlin) > IST (istanbul)</span>
+            <p class="flight-info">08:45 > 10:25 (17 apr)</p>
+            <p class="flight-info">cls: Y | no: AB830121 | gate: 21</p>
+          </div>
+          <img class="media-object pull-left" src="http://placehold.it/48x48" alt="tarom">
+          <div class="media-body flight-route-item">
+            <span class="flight-title">IST (istanbul) > ORY (paris)</span>
+            <p class="flight-info">08:45 > 10:25 (17 apr)</p>
+            <p class="flight-info">cls: Y | no: AB830121 | gate: 21</p>
+          </div>
+        </li>
+        <li class="table-view-cell media">
+          <a class="navigate-right" href="tpl/flight/fare-rules.html" data-transition="slide-in">
+            <span class="media-object icon pe-7s-attention pull-left"></span>
+            <div class="media-body">
+              <span class="flight-title">Fare rules</span>
+            </div>
+          </a>
+        </li>
+        <li class="table-view-cell media">
+          <a class="navigate-right" href="pl/flight/baggage-allowance.html" data-transition="slide-in">
+            <span class="media-object icon pe-7s-portfolio pull-left"></span>
+            <div class="media-body">
+              <span class="flight-title">Baggage allowance</span>
+            </div>
+          </a>
+        </li>
+
+      </ul>
+
+      <div class="content-padded">
+        <button class="btn btn-positive btn-block">Buy 121.14 RON</button>
+      </div>
+      
+      </form>
+    </div>
+  </body>
+</html>

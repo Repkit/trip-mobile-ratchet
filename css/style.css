@@ -1,0 +1,107 @@
+/*---general---*/
+img.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.brand-top-logo {
+  margin-top: 7px;
+}
+
+.breadcrump {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/*---flight form---*/
+.input-row label + select {
+  float: right;
+  width: 65%;
+  padding-left: 0;
+  margin-bottom: 0;
+  border-bottom: 0;
+
+  font:inherit; /*keep font style*/
+  height:35px; /*force same height as inputs*/
+
+  /* remove border, background and inset shadow */
+  border:none;
+  background-color:transparent;
+  box-shadow:none;
+}
+
+.info-text {
+  color: #8f8f94;
+}
+
+.small {
+  font-size: 47%;
+}
+.input-label {
+  font-size: 85%;
+}
+
+/*---flight listing---*/
+.bar-list-info {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 15px;
+  margin-top: 1px;
+  margin-left: 0;
+  font-weight: 500;
+  color: #999;
+  background-color: #fafafa;
+  height: auto;
+}
+
+.table-view {
+  margin-top: 0px !important;
+  /*margin-bottom: 0px !important;*/
+}
+
+.bar-header-secondary ~ .content {
+  padding-top: 76px;
+}
+
+.flight-title {
+  font-size: 14px;
+}
+
+.flight-info {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.flight-item {
+  padding-bottom: 0px;
+}
+
+.flight-route-item {
+  line-height: 17px;
+}
+
+.flight-list-end {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+/*.list-elem {
+  margin-top: 10px;
+}
+
+.list-elem > :first-child { 
+  margin-top: 0 !important; 
+}*/
+
+/*
+.icon-logo {
+    background: transparent url(../img/logo.png);
+    background-repeat: no-repeat;
+}
+.media-object {
+  width: 42px;
+  height: 42px;
+}*/
