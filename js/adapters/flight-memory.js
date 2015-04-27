@@ -4,168 +4,471 @@ app.productAdapter = (function () {
 
     var findById = function (id) {
             var deferred = $.Deferred(),
-                product = null,
+                flight = null,
                 l = products.length;
             for (var i = 0; i < l; i++) {
-                if (products[i].id === id) {
-                    product = products[i];
+                if (flights[i].ItineraryCode === id) {
+                    flight = flights[i];
                     break;
                 }
             }
-            deferred.resolve(product);
+            deferred.resolve(flight);
             return deferred.promise();
         },
 
         findByName = function (searchKey) {
             var deferred = $.Deferred();
-            var results = products.filter(function (element) {
+            var results = flights.filter(function (element) {
                 return element.name.toLowerCase().indexOf(searchKey.toLowerCase()) > -1;
             });
             deferred.resolve(results);
             return deferred.promise();
         },
 
-        products = [
-            {   "id": 1,
-                "name": "Tuareg Summer",
-                "category": "Men's Shorts",
-                "price": "$39.90",
-                "rating": 4,
-                "smallPic": "tuareg_small.jpg",
-                "largePic": "tuareg.jpg",
-                "features": [
-                    "Lightweight, breathable cotton keeps you cool on hot summer days",
-                    "Large pockets secure essentials like your keys and wallet",
-                    "Comes in range of colors",
-                    "Easywash, pre-shrunk and stain-resistant"
-                ]
-            },
-            {   "id": 2,
-                "name": "Nairobi Runners Blue",
-                "category": "Men's Sport Footwear",
-                "price": "$75",
-                "rating": 3,
-                "smallPic": "nairobi_small.jpg",
-                "largePic": "nairobi.jpg",
-                "features": [
-                    "Lightweight upper with mesh windows for ventilation",
-                    "Impacto cushioning system delivers 30% more protection when running on hard surfaces",
-                    "Excellent ankle support",
-                    "Available in a variety of colors"
-                ]
-            },
-            {   "id": 3,
-                "name": "Swim Goggles",
-                "category": "Men's Sport Accessories",
-                "price": "$25",
-                "rating": 5,
-                "smallPic": "goggles_small.jpg",
-                "largePic": "goggles.jpg",
-                "features": [
-                    "Synthetic shell features waterproof, breathable coating; taped critical seams add weather protection",
-                    "Polyester insulation hoards warmth on the inside",
-                    "Integrated hood features removable faux fur trim for a dash of style",
-                    "Stretch inner cuffs with thumbholes add warmth and an extra barrier against snow entry"
-                ]
-            },
-            {   "id": 4,
-                "name": "Interlaken Trek",
-                "category": "Sport Hikers Footwear",
-                "price": "$189.90",
-                "rating": 4,
-                "smallPic": "interlaken_small.jpg",
-                "largePic": "interlaken.jpg",
-                "features": [
-                    "Lightweight upper with mesh windows for ventilation",
-                    "Impacto cushioning system delivers 30% more protection when running on hard surfaces",
-                    "Excellent ankle support",
-                    "Available in a variety of colors"
-                ]
-            },
-            {   "id": 5,
-                "name": "Pufferfish",
-                "category": "Snorkeling Fins",
-                "price": "$25",
-                "rating": 3,
-                "smallPic": "pufferfish_small.jpg",
-                "largePic": "pufferfish.jpg",
-                "features": [
-                    "Wool blend offers natural water repellence in light moisture",
-                    "Polyfill insulation adds extra warmth",
-                    "Lapels can be buttoned up to the neck for added warmth",
-                    "Tailored details include a back dart, bound seams, finished interior and button cuffs"
-                ]
-            },
-            {   "id": 6,
-                "name": "Raja Ampat",
-                "category": "Women's Sunglasses",
-                "price": "$36",
-                "rating": 5,
-                "smallPic": "raja_small.jpg",
-                "largePic": "raja.jpg",
-                "features": [
-                    "Wool blend offers natural water repellence in light moisture",
-                    "Polyfill insulation adds extra warmth",
-                    "Lapels can be buttoned up to the neck for added warmth",
-                    "Tailored details include a back dart, bound seams, finished interior and button cuffs"
-                ]
-            },
-            {   "id": 7,
-                "name": "Mombassa Runners Pink",
-                "category": "Women's Cross-Trainers",
-                "price": "$120",
-                "rating": 2,
-                "smallPic": "mombassa_small.jpg",
-                "largePic": "mombassa.jpg",
-                "features": [
-                    "Extra lateral support",
-                    "Quick fasten velcro",
-                    "Elasticized upper for maximum comfort"
-                ]
-            },
-            {   "id": 8,
-                "name": "Banff Snow",
-                "category": "Ski Boots",
-                "price": "$110",
-                "rating": 4,
-                "smallPic": "banff_small.jpg",
-                "largePic": "banff.jpg",
-                "features": [
-                    "Extra lateral support",
-                    "Quick fasten velcro",
-                    "Elasticized upper for maximum comfort"
-                ]
-            },
-            {   "id": 9,
-                "name": "Corona",
-                "category": "Shorts",
-                "price": "$39",
-                "rating": 4,
-                "smallPic": "corona_small.jpg",
-                "largePic": "corona.jpg",
-                "features": [
-                    "Lightweight peached nylon fabric wicks moisture and dries quickly to keep you comfortable on the go; fabric has a soft, smooth feel",
-                    "With a UPF 50+ rating, fabric provides excellent protection against harmful ultraviolet rays",
-                    "Secure your travel and trail essentials in the 2 side-seam zippered pockets or side cargo pockets"
-                ]
-            },
-            {   "id": 10,
-                "name": "Saskatoon Parka Purple",
-                "category": "Women's Coat",
-                "price": "$299",
-                "rating": 4,
-                "smallPic": "saskatoon_small.jpg",
-                "largePic": "saskatoon.jpg",
-                "features": [
-                    "Storm shell provides wind and rain protection while allowing moisture to escape, keeping you warm and dry",
-                    "High loft goose down provides the best lightweight insulation",
-                    "Fur-lined hood for great protection in high wind conditions",
-                    "Two high hand warmer pockets with fleece lining and two lower fleece lined pockets to keep your hands warm",
-                    "Heavy duty rib knit cuffs and waistband to keep out cold winds and drafts",
-                    "Inset sleeve design for comfort and improved fit"
-                ]
-            }
-        ];
+        flights = [{
+                    "ItineraryCode": "11993e15fe70f952f7681f4d98da7f15:0",
+                    "Price": "104.5",
+                    "Currency": "USD",
+                    "ReturnRoute": {
+                        "Ref": "0",
+                        "Duration": "1:30",
+                        "Hash": "704436a102df78a21bcf71b7027bccaf",
+                        "ItineraryCode": null,
+                        "Segment": [{
+                            "Aircraft": {
+                                "Code": "319",
+                                "_": "Airbus A319"
+                            },
+                            "Flight": {
+                                "Number": "8407",
+                                "Class": "E",
+                                "NumberOfSeats": null,
+                                "Meal": null
+                            },
+                            "Origin": {
+                                "Date": "2015-09-21",
+                                "Terminal": "1",
+                                "Time": "09:20:00",
+                                "Airport": {
+                                    "Code": "CDG",
+                                    "City": "Paris",
+                                    "_": "Charles De Gaulle",
+                                    "_data": []
+                                }
+                            },
+                            "Destination": {
+                                "Date": "2015-09-21",
+                                "Terminal": "",
+                                "Time": "10:50:00",
+                                "Airport": {
+                                    "Code": "TXL",
+                                    "City": "Berlin",
+                                    "_": "Tegel",
+                                    "_data": {
+                                        "isDestinationAirport": true
+                                    }
+                                }
+                            },
+                            "Carrier": {
+                                "Marketing": {
+                                    "Code": "4U",
+                                    "_": "Germanwings"
+                                },
+                                "Operating": {
+                                    "Code": "4U",
+                                    "_": "Germanwings"
+                                }
+                            }
+                        }]
+                    },
+                    "DepartureRoute": {
+                        "AirportChange": false,
+                        "MultipleAirlines": false,
+                        "Ref": "0",
+                        "Duration": "1:40",
+                        "Hash": "651ca3036a0ea28c87a8a792ff6158b2",
+                        "ItineraryCode": null,
+                        "Segment": [{
+                            "Aircraft": {
+                                "Code": "319",
+                                "_": "Airbus A319"
+                            },
+                            "Flight": {
+                                "Number": "8404",
+                                "Class": "E",
+                                "NumberOfSeats": null,
+                                "Meal": null
+                            },
+                            "Origin": {
+                                "Date": "2015-09-20",
+                                "Terminal": "",
+                                "Time": "18:20:00",
+                                "Airport": {
+                                    "Code": "TXL",
+                                    "City": "Berlin",
+                                    "_": "Tegel",
+                                    "_data": []
+                                }
+                            },
+                            "Destination": {
+                                "Date": "2015-09-20",
+                                "Terminal": "1",
+                                "Time": "20:00:00",
+                                "Airport": {
+                                    "Code": "CDG",
+                                    "City": "Paris",
+                                    "_": "Charles De Gaulle",
+                                    "_data": {
+                                        "isDestinationAirport": true
+                                    }
+                                }
+                            },
+                            "Carrier": {
+                                "Marketing": {
+                                    "Code": "4U",
+                                    "_": "Germanwings"
+                                },
+                                "Operating": {
+                                    "Code": "4U",
+                                    "_": "Germanwings"
+                                }
+                            }
+                        }]
+                    }
+                },
+                {
+                    "ItineraryCode": "11993e15fe70f952f7681f4d98da7f15:1",
+                    "Price": "104.5",
+                    "Currency": "USD",
+                    "ReturnRoute": {
+                        "Ref": "1",
+                        "Duration": "1:30",
+                        "Hash": "18973a128170be6779f7756519049f7a",
+                        "ItineraryCode": null,
+                        "Segment": [{
+                            "Aircraft": {
+                                "Code": "320",
+                                "_": "Airbus A320-100/200"
+                            },
+                            "Flight": {
+                                "Number": "8405",
+                                "Class": "E",
+                                "NumberOfSeats": null,
+                                "Meal": null
+                            },
+                            "Origin": {
+                                "Date": "2015-09-21",
+                                "Terminal": "1",
+                                "Time": "20:35:00",
+                                "Airport": {
+                                    "Code": "CDG",
+                                    "City": "Paris",
+                                    "_": "Charles De Gaulle",
+                                    "_data": []
+                                }
+                            },
+                            "Destination": {
+                                "Date": "2015-09-21",
+                                "Terminal": "",
+                                "Time": "22:05:00",
+                                "Airport": {
+                                    "Code": "TXL",
+                                    "City": "Berlin",
+                                    "_": "Tegel",
+                                    "_data": {
+                                        "isDestinationAirport": true
+                                    }
+                                }
+                            },
+                            "Carrier": {
+                                "Marketing": {
+                                    "Code": "4U",
+                                    "_": "Germanwings"
+                                },
+                                "Operating": {
+                                    "Code": "4U",
+                                    "_": "Germanwings"
+                                }
+                            }
+                        }]
+                    },
+                    "DepartureRoute": {
+                        "AirportChange": false,
+                        "MultipleAirlines": false,
+                        "Ref": "0",
+                        "Duration": "1:40",
+                        "Hash": "651ca3036a0ea28c87a8a792ff6158b2",
+                        "ItineraryCode": null,
+                        "Segment": [{
+                            "Aircraft": {
+                                "Code": "319",
+                                "_": "Airbus A319"
+                            },
+                            "Flight": {
+                                "Number": "8404",
+                                "Class": "E",
+                                "NumberOfSeats": null,
+                                "Meal": null
+                            },
+                            "Origin": {
+                                "Date": "2015-09-20",
+                                "Terminal": "",
+                                "Time": "18:20:00",
+                                "Airport": {
+                                    "Code": "TXL",
+                                    "City": "Berlin",
+                                    "_": "Tegel",
+                                    "_data": []
+                                }
+                            },
+                            "Destination": {
+                                "Date": "2015-09-20",
+                                "Terminal": "1",
+                                "Time": "20:00:00",
+                                "Airport": {
+                                    "Code": "CDG",
+                                    "City": "Paris",
+                                    "_": "Charles De Gaulle",
+                                    "_data": {
+                                        "isDestinationAirport": true
+                                    }
+                                }
+                            },
+                            "Carrier": {
+                                "Marketing": {
+                                    "Code": "4U",
+                                    "_": "Germanwings"
+                                },
+                                "Operating": {
+                                    "Code": "4U",
+                                    "_": "Germanwings"
+                                }
+                            }
+                        }]
+                    }
+                },
+                {
+                    "ItineraryCode": "4f232895d107cf432d830b4f17480dc7:0",
+                    "Price": "107.66",
+                    "Currency": "USD",
+                    "ReturnRoute": {
+                        "Ref": "0",
+                        "Duration": "01:30",
+                        "Hash": "5e79654fddca1a54c029884ab470cc97",
+                        "ItineraryCode": null,
+                        "Segment": [{
+                            "Aircraft": {
+                                "Code": "319",
+                                "_": "Airbus A319"
+                            },
+                            "Flight": {
+                                "Number": "8407",
+                                "Class": "E",
+                                "NumberOfSeats": "4",
+                                "Meal": "SNACK OR BRUNCH"
+                            },
+                            "Origin": {
+                                "Date": "2015-09-21",
+                                "Terminal": "1",
+                                "Time": "09:20:00",
+                                "Airport": {
+                                    "Code": "CDG",
+                                    "City": "Paris",
+                                    "_": "Charles De Gaulle",
+                                    "_data": []
+                                }
+                            },
+                            "Destination": {
+                                "Date": "2015-09-21",
+                                "Terminal": null,
+                                "Time": "10:50:00",
+                                "Airport": {
+                                    "Code": "TXL",
+                                    "City": "Berlin",
+                                    "_": "Tegel",
+                                    "_data": {
+                                        "isDestinationAirport": true
+                                    }
+                                }
+                            },
+                            "Carrier": {
+                                "Marketing": {
+                                    "Code": "4U",
+                                    "_": "Germanwings"
+                                },
+                                "Operating": {
+                                    "Code": "4U",
+                                    "_": "Germanwings"
+                                }
+                            }
+                        }]
+                    },
+                    "DepartureRoute": {
+                        "AirportChange": false,
+                        "MultipleAirlines": false,
+                        "Ref": "0",
+                        "Duration": "01:40",
+                        "Hash": "2b8baca0a0e52548ed0ec279e9ab2ac8",
+                        "ItineraryCode": null,
+                        "Segment": [{
+                            "Aircraft": {
+                                "Code": "319",
+                                "_": "Airbus A319"
+                            },
+                            "Flight": {
+                                "Number": "8404",
+                                "Class": "E",
+                                "NumberOfSeats": "4",
+                                "Meal": "SNACK OR BRUNCH"
+                            },
+                            "Origin": {
+                                "Date": "2015-09-20",
+                                "Terminal": null,
+                                "Time": "18:20:00",
+                                "Airport": {
+                                    "Code": "TXL",
+                                    "City": "Berlin",
+                                    "_": "Tegel",
+                                    "_data": []
+                                }
+                            },
+                            "Destination": {
+                                "Date": "2015-09-20",
+                                "Terminal": "1",
+                                "Time": "20:00:00",
+                                "Airport": {
+                                    "Code": "CDG",
+                                    "City": "Paris",
+                                    "_": "Charles De Gaulle",
+                                    "_data": {
+                                        "isDestinationAirport": true
+                                    }
+                                }
+                            },
+                            "Carrier": {
+                                "Marketing": {
+                                    "Code": "4U",
+                                    "_": "Germanwings"
+                                },
+                                "Operating": {
+                                    "Code": "4U",
+                                    "_": "Germanwings"
+                                }
+                            }
+                        }]
+                    }
+                },
+                {
+                    "ItineraryCode": "4f232895d107cf432d830b4f17480dc7:1",
+                    "Price": "107.66",
+                    "Currency": "USD",
+                    "ReturnRoute": {
+                        "Ref": "1",
+                        "Duration": "01:30",
+                        "Hash": "11943b73464245b09d7503a537863c80",
+                        "ItineraryCode": null,
+                        "Segment": [{
+                            "Aircraft": {
+                                "Code": "320",
+                                "_": "Airbus A320-100/200"
+                            },
+                            "Flight": {
+                                "Number": "8405",
+                                "Class": "E",
+                                "NumberOfSeats": "4",
+                                "Meal": "SNACK OR BRUNCH"
+                            },
+                            "Origin": {
+                                "Date": "2015-09-21",
+                                "Terminal": "1",
+                                "Time": "20:35:00",
+                                "Airport": {
+                                    "Code": "CDG",
+                                    "City": "Paris",
+                                    "_": "Charles De Gaulle",
+                                    "_data": []
+                                }
+                            },
+                            "Destination": {
+                                "Date": "2015-09-21",
+                                "Terminal": null,
+                                "Time": "22:05:00",
+                                "Airport": {
+                                    "Code": "TXL",
+                                    "City": "Berlin",
+                                    "_": "Tegel",
+                                    "_data": {
+                                        "isDestinationAirport": true
+                                    }
+                                }
+                            },
+                            "Carrier": {
+                                "Marketing": {
+                                    "Code": "4U",
+                                    "_": "Germanwings"
+                                },
+                                "Operating": {
+                                    "Code": "4U",
+                                    "_": "Germanwings"
+                                }
+                            }
+                        }]
+                    },
+                    "DepartureRoute": {
+                        "AirportChange": false,
+                        "MultipleAirlines": false,
+                        "Ref": "0",
+                        "Duration": "01:40",
+                        "Hash": "2b8baca0a0e52548ed0ec279e9ab2ac8",
+                        "ItineraryCode": null,
+                        "Segment": [{
+                            "Aircraft": {
+                                "Code": "319",
+                                "_": "Airbus A319"
+                            },
+                            "Flight": {
+                                "Number": "8404",
+                                "Class": "E",
+                                "NumberOfSeats": "4",
+                                "Meal": "SNACK OR BRUNCH"
+                            },
+                            "Origin": {
+                                "Date": "2015-09-20",
+                                "Terminal": null,
+                                "Time": "18:20:00",
+                                "Airport": {
+                                    "Code": "TXL",
+                                    "City": "Berlin",
+                                    "_": "Tegel",
+                                    "_data": []
+                                }
+                            },
+                            "Destination": {
+                                "Date": "2015-09-20",
+                                "Terminal": "1",
+                                "Time": "20:00:00",
+                                "Airport": {
+                                    "Code": "CDG",
+                                    "City": "Paris",
+                                    "_": "Charles De Gaulle",
+                                    "_data": {
+                                        "isDestinationAirport": true
+                                    }
+                                }
+                            },
+                            "Carrier": {
+                                "Marketing": {
+                                    "Code": "4U",
+                                    "_": "Germanwings"
+                                },
+                                "Operating": {
+                                    "Code": "4U",
+                                    "_": "Germanwings"
+                                }
+                            }
+                        }]
+                    }
+                }];
 
     // The public API
     return {
