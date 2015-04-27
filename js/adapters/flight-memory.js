@@ -1,11 +1,11 @@
-app.productAdapter = (function () {
+var flightAdapter = (function () {
 
     "use strict";
 
     var findById = function (id) {
             var deferred = $.Deferred(),
                 flight = null,
-                l = products.length;
+                l = flights.length;
             for (var i = 0; i < l; i++) {
                 if (flights[i].ItineraryCode === id) {
                     flight = flights[i];
@@ -23,6 +23,10 @@ app.productAdapter = (function () {
             });
             deferred.resolve(results);
             return deferred.promise();
+        },
+
+        fetchAll = function () {
+            return flights;
         },
 
         flights = [{
@@ -473,7 +477,8 @@ app.productAdapter = (function () {
     // The public API
     return {
         findById: findById,
-        findByName: findByName
+        findByName: findByName,
+        fetchAll: fetchAll
     };
 
 }());
