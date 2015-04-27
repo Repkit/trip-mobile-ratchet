@@ -13,7 +13,7 @@ $(document).ready(function () {
 	function renderFlightSearchForm(){
 		var html = 
 		'<div class="card">'+
-	        '<form class="input-group">'+
+	        '<form class="input-group" method="get" action="tpl/flight/list.html">'+
 	        '    <ul class="table-view">'+
 	        '      <li class="table-view-cell">'+
 	        '        <span class="pe-7s-way pe-2x pe-va"></span>'+
