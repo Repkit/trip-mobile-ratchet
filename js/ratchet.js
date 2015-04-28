@@ -1,23 +1,89 @@
 /*!
  * =====================================================
  * Ratchet v2.0.2 (http://goratchet.com)
- * Copyright 2014 Connor Sears
+ * Copyright 2015 Connor Sears
  * Licensed under MIT (https://github.com/twbs/ratchet/blob/master/LICENSE)
  *
  * v2.0.2 designed by @connors.
  * =====================================================
  */
 /* ========================================================================
- * Ratchet: modals.js v2.0.2
- * http://goratchet.com/components#modals
+ * Ratchet: common.js v2.0.2
+ * http://goratchet.com/
  * ========================================================================
- * Copyright 2014 Connor Sears
+ * Copyright 2015 Connor Sears
  * Licensed under MIT (https://github.com/twbs/ratchet/blob/master/LICENSE)
  * ======================================================================== */
 
 !(function () {
   'use strict';
 
+  // Compatible With CustomEvent
+  if (!window.CustomEvent) {
+    window.CustomEvent = function (type, config) {
+      var e = document.createEvent('CustomEvent');
+      e.initCustomEvent(type, config.bubbles, config.cancelable, config.detail);
+      return e;
+    };
+  }
+
+  // Create Ratchet namespace
+  if (typeof window.RATCHET === 'undefined') {
+    window.RATCHET = {};
+  }
+
+  // Original script from http://davidwalsh.name/vendor-prefix
+  window.RATCHET.getBrowserCapabilities = (function () {
+    var styles = window.getComputedStyle(document.documentElement, '');
+    var pre = (Array.prototype.slice
+        .call(styles)
+        .join('')
+        .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
+      )[1];
+    return {
+      prefix: '-' + pre + '-',
+      transform: pre[0].toUpperCase() + pre.substr(1) + 'Transform'
+    };
+  })();
+
+  window.RATCHET.getTransitionEnd = (function () {
+    var el = document.createElement('ratchet');
+    var transEndEventNames = {
+      WebkitTransition : 'webkitTransitionEnd',
+      MozTransition : 'transitionend',
+      OTransition : 'oTransitionEnd otransitionend',
+      transition : 'transitionend'
+    };
+
+    for (var name in transEndEventNames) {
+      if (el.style[name] !== undefined) {
+        return transEndEventNames[name];
+      }
+    }
+
+    return transEndEventNames.transition;
+  })();
+}());
+
+/* ========================================================================
+ * Ratchet: modals.js v2.0.2
+ * http://goratchet.com/components#modals
+ * ========================================================================
+ * Copyright 2015 Connor Sears
+ * Licensed under MIT (https://github.com/twbs/ratchet/blob/master/LICENSE)
+ * ======================================================================== */
+
+!(function () {
+  'use strict';
+
+  var eventModalOpen = new CustomEvent('modalOpen', {
+    bubbles: true,
+    cancelable: true
+  });
+  var eventModalClose = new CustomEvent('modalClose', {
+    bubbles: true,
+    cancelable: true
+  });
   var findModals = function (target) {
     var i;
     var modals = document.querySelectorAll('a');
@@ -40,10 +106,15 @@
 
   window.addEventListener('touchend', function (event) {
     var modal = getModal(event);
-    if (modal) {
-      if (modal && modal.classList.contains('modal')) {
-        modal.classList.toggle('active');
+    if (modal && modal.classList.contains('modal')) {
+      var eventToDispatch = eventModalOpen;
+      if (modal.classList.contains('active')) {
+        eventToDispatch = eventModalClose;
       }
+      modal.dispatchEvent(eventToDispatch);
+      modal.classList.toggle('active');
+    }
+    if(modal){
       event.preventDefault(); // prevents rewriting url (apps can still use hash values in url)
     }
   });
@@ -53,7 +124,7 @@
  * Ratchet: popovers.js v2.0.2
  * http://goratchet.com/components#popovers
  * ========================================================================
- * Copyright 2014 Connor Sears
+ * Copyright 2015 Connor Sears
  * Licensed under MIT (https://github.com/twbs/ratchet/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -77,7 +148,7 @@
 
   var onPopoverHidden = function () {
     popover.style.display = 'none';
-    popover.removeEventListener('webkitTransitionEnd', onPopoverHidden);
+    popover.removeEventListener(window.RATCHET.getTransitionEnd, onPopoverHidden);
   };
 
   var backdrop = (function () {
@@ -86,7 +157,7 @@
     element.classList.add('backdrop');
 
     element.addEventListener('touchend', function () {
-      popover.addEventListener('webkitTransitionEnd', onPopoverHidden);
+      popover.addEventListener(window.RATCHET.getTransitionEnd, onPopoverHidden);
       popover.classList.remove('visible');
       popover.parentNode.removeChild(backdrop);
     });
@@ -103,8 +174,7 @@
 
     try {
       popover = document.querySelector(anchor.hash);
-    }
-    catch (error) {
+    } catch (error) {
       popover = null;
     }
 
@@ -142,7 +212,7 @@
  * http://goratchet.com/components#push
  * ========================================================================
  * inspired by @defunkt's jquery.pjax.js
- * Copyright 2014 Connor Sears
+ * Copyright 2015 Connor Sears
  * Licensed under MIT (https://github.com/twbs/ratchet/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -161,9 +231,10 @@
   var maxCacheLength = 20;
   var cacheMapping   = sessionStorage;
   var domCache       = {};
+  // Change these to unquoted camelcase in the next major version bump
   var transitionMap  = {
-    slideIn  : 'slide-out',
-    slideOut : 'slide-in',
+    'slide-in'  : 'slide-out',
+    'slide-out' : 'slide-in',
     fade     : 'fade'
   };
 
@@ -181,7 +252,6 @@
     }
     cacheMapping[data.id] = JSON.stringify(data);
     window.history.replaceState(data.id, data.title, data.url);
-    domCache[data.id] = document.body.cloneNode(true);
   };
 
   var cachePush = function () {
@@ -199,7 +269,9 @@
       delete cacheMapping[cacheBackStack.shift()];
     }
 
-    window.history.pushState(null, '', cacheMapping[PUSH.id].url);
+    if (getCached(PUSH.id).url) {
+      window.history.pushState(null, '', getCached(PUSH.id).url);
+    }
 
     cacheMapping.cacheForwardStack = JSON.stringify(cacheForwardStack);
     cacheMapping.cacheBackStack    = JSON.stringify(cacheBackStack);
@@ -330,7 +402,9 @@
     swapContent(
       (activeObj.contents || activeDom).cloneNode(true),
       document.querySelector('.content'),
-      transition
+      transition, function () {
+        triggerStateChange();
+      }
     );
 
     PUSH.id = id;
@@ -348,6 +422,8 @@
 
     options.container = options.container || options.transition ? document.querySelector('.content') : document.body;
 
+    var isFileProtocol = /^file:/.test(window.location.protocol);
+
     for (key in bars) {
       if (bars.hasOwnProperty(key)) {
         options[key] = options[key] || document.querySelector(bars[key]);
@@ -360,17 +436,25 @@
     }
 
     xhr = new XMLHttpRequest();
-    xhr.open('GET', options.url, true);
-    xhr.setRequestHeader('X-PUSH', 'true');
+    if (isFileProtocol) {
+      xhr.open('GET', options.url, false);
+    } else {
+      xhr.open('GET', options.url, true);
+      xhr.setRequestHeader('X-PUSH', 'true');
 
-    xhr.onreadystatechange = function () {
-      if (options._timeout) {
-        clearTimeout(options._timeout);
-      }
-      if (xhr.readyState === 4) {
-        xhr.status === 200 ? success(xhr, options) : failure(options.url);
-      }
-    };
+      xhr.onreadystatechange = function () {
+        if (options._timeout) {
+          clearTimeout(options._timeout);
+        }
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            success(xhr, options);
+          } else {
+            failure(options.url);
+          }
+        }
+      };
+    }
 
     if (!PUSH.id) {
       cacheReplace({
@@ -378,9 +462,11 @@
         url        : window.location.href,
         title      : document.title,
         timeout    : options.timeout,
-        transition : null
+        transition : options.transition
       });
     }
+
+    cacheCurrentContent();
 
     if (options.timeout) {
       options._timeout = setTimeout(function () {  xhr.abort('timeout'); }, options.timeout);
@@ -388,10 +474,22 @@
 
     xhr.send();
 
+    if (isFileProtocol) {
+      if (xhr.status === 0 || xhr.status === 200) {
+        success(xhr, options);
+      } else {
+        failure(options.url);
+      }
+    }
+
     if (xhr.readyState && !options.ignorePush) {
       cachePush();
     }
   };
+
+  function cacheCurrentContent () {
+    domCache[PUSH.id] = document.body.cloneNode(true);
+  }
 
 
   // Main XHR handlers
@@ -464,7 +562,7 @@
         document.body.insertBefore(swap, document.querySelector('.content'));
       }
     } else {
-      enter  = /in$/.test(transition);
+      enter = /in$/.test(transition);
 
       if (transition === 'fade') {
         container.classList.add('in');
@@ -482,35 +580,41 @@
     }
 
     if (!transition) {
-      complete && complete();
+      if (complete) {
+        complete();
+      }
     }
 
     if (transition === 'fade') {
       container.offsetWidth; // force reflow
       container.classList.remove('in');
       var fadeContainerEnd = function () {
-        container.removeEventListener('webkitTransitionEnd', fadeContainerEnd);
+        container.removeEventListener(window.RATCHET.getTransitionEnd, fadeContainerEnd);
         swap.classList.add('in');
-        swap.addEventListener('webkitTransitionEnd', fadeSwapEnd);
+        swap.addEventListener(window.RATCHET.getTransitionEnd, fadeSwapEnd);
       };
       var fadeSwapEnd = function () {
-        swap.removeEventListener('webkitTransitionEnd', fadeSwapEnd);
+        swap.removeEventListener(window.RATCHET.getTransitionEnd, fadeSwapEnd);
         container.parentNode.removeChild(container);
         swap.classList.remove('fade');
         swap.classList.remove('in');
-        complete && complete();
+        if (complete) {
+          complete();
+        }
       };
-      container.addEventListener('webkitTransitionEnd', fadeContainerEnd);
+      container.addEventListener(window.RATCHET.getTransitionEnd, fadeContainerEnd);
 
     }
 
     if (/slide/.test(transition)) {
       var slideEnd = function () {
-        swap.removeEventListener('webkitTransitionEnd', slideEnd);
+        swap.removeEventListener(window.RATCHET.getTransitionEnd, slideEnd);
         swap.classList.remove('sliding', 'sliding-in');
         swap.classList.remove(swapDirection);
         container.parentNode.removeChild(container);
-        complete && complete();
+        if (complete) {
+          complete();
+        }
       };
 
       container.offsetWidth; // force reflow
@@ -518,7 +622,7 @@
       containerDirection = enter ? 'left' : 'right';
       container.classList.add(containerDirection);
       swap.classList.remove(swapDirection);
-      swap.addEventListener('webkitTransitionEnd', slideEnd);
+      swap.addEventListener(window.RATCHET.getTransitionEnd, slideEnd);
     }
   };
 
@@ -595,7 +699,7 @@
       head.innerHTML = responseText;
     }
 
-    data.title = head.querySelector('title');
+    data.title = head.querySelector('title') || document.querySelector('title');
     var text = 'innerText' in data.title ? 'innerText' : 'textContent';
     data.title = data.title && data.title[text].trim();
 
@@ -615,9 +719,16 @@
   window.addEventListener('touchstart', function () { isScrolling = false; });
   window.addEventListener('touchmove', function () { isScrolling = true; });
   window.addEventListener('touchend', touchend);
-  window.addEventListener('click', function (e) { if (getTarget(e)) {e.preventDefault();} });
+  window.addEventListener('click', function (e) {
+    if (getTarget(e)) {
+      e.preventDefault();
+    }
+  });
   window.addEventListener('popstate', popstate);
+
+  // TODO : Remove this line in the next major version
   window.PUSH = PUSH;
+  window.RATCHET.push = PUSH;
 
 }());
 
@@ -625,7 +736,7 @@
  * Ratchet: segmented-controllers.js v2.0.2
  * http://goratchet.com/components#segmentedControls
  * ========================================================================
- * Copyright 2014 Connor Sears
+ * Copyright 2015 Connor Sears
  * Licensed under MIT (https://github.com/twbs/ratchet/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -684,7 +795,12 @@
     targetBody.classList.add(className);
   });
 
-  window.addEventListener('click', function (e) { if (getTarget(e.target)) {e.preventDefault();} });
+  window.addEventListener('click', function (e) {
+    if (getTarget(e.target)) {
+      e.preventDefault();
+    }
+  });
+
 }());
 
 /* ========================================================================
@@ -692,7 +808,7 @@
  * http://goratchet.com/components#sliders
  * ========================================================================
    Adapted from Brad Birdsall's swipe
- * Copyright 2014 Connor Sears
+ * Copyright 2015 Connor Sears
  * Licensed under MIT (https://github.com/twbs/ratchet/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -712,6 +828,10 @@
   var slideNumber;
   var isScrolling;
   var scrollableArea;
+  var startedMoving;
+
+  var transformPrefix   = window.RATCHET.getBrowserCapabilities.prefix;
+  var transformProperty = window.RATCHET.getBrowserCapabilities.transform;
 
   var getSlider = function (target) {
     var i;
@@ -727,11 +847,9 @@
   };
 
   var getScroll = function () {
-    if ('webkitTransform' in slider.style) {
-      var translate3d = slider.style.webkitTransform.match(/translate3d\(([^,]*)/);
-      var ret = translate3d ? translate3d[1] : 0;
-      return parseInt(ret, 10);
-    }
+    var translate3d = slider.style[transformProperty].match(/translate3d\(([^,]*)/);
+    var ret = translate3d ? translate3d[1] : 0;
+    return parseInt(ret, 10);
   };
 
   var setSlideNumber = function (offset) {
@@ -764,7 +882,7 @@
 
     setSlideNumber(0);
 
-    slider.style['-webkit-transition-duration'] = 0;
+    slider.style[transformPrefix + 'transition-duration'] = 0;
   };
 
   var onTouchMove = function (e) {
@@ -772,12 +890,17 @@
       return; // Exit if a pinch || no slider
     }
 
+    // adjust the starting position if we just started to avoid jumpage
+    if (!startedMoving) {
+      pageX += (e.touches[0].pageX - pageX) - 1;
+    }
+
     deltaX = e.touches[0].pageX - pageX;
     deltaY = e.touches[0].pageY - pageY;
     pageX  = e.touches[0].pageX;
     pageY  = e.touches[0].pageY;
 
-    if (typeof isScrolling === 'undefined') {
+    if (typeof isScrolling === 'undefined' && startedMoving) {
       isScrolling = Math.abs(deltaY) > Math.abs(deltaX);
     }
 
@@ -792,7 +915,10 @@
     resistance = slideNumber === 0         && deltaX > 0 ? (pageX / sliderWidth) + 1.25 :
                  slideNumber === lastSlide && deltaX < 0 ? (Math.abs(pageX) / sliderWidth) + 1.25 : 1;
 
-    slider.style.webkitTransform = 'translate3d(' + offsetX + 'px,0,0)';
+    slider.style[transformProperty] = 'translate3d(' + offsetX + 'px,0,0)';
+
+    // started moving
+    startedMoving = true;
   };
 
   var onTouchEnd = function (e) {
@@ -800,14 +926,15 @@
       return;
     }
 
-    setSlideNumber(
-      (+new Date()) - startTime < 1000 && Math.abs(deltaX) > 15 ? (deltaX < 0 ? -1 : 1) : 0
-    );
+    // we're done moving
+    startedMoving = false;
+
+    setSlideNumber((+new Date()) - startTime < 1000 && Math.abs(deltaX) > 15 ? (deltaX < 0 ? -1 : 1) : 0);
 
     offsetX = slideNumber * sliderWidth;
 
-    slider.style['-webkit-transition-duration'] = '.2s';
-    slider.style.webkitTransform = 'translate3d(' + offsetX + 'px,0,0)';
+    slider.style[transformPrefix + 'transition-duration'] = '.2s';
+    slider.style[transformProperty] = 'translate3d(' + offsetX + 'px,0,0)';
 
     e = new CustomEvent('slide', {
       detail: { slideNumber: Math.abs(slideNumber) },
@@ -829,7 +956,7 @@
  * http://goratchet.com/components#toggles
  * ========================================================================
    Adapted from Brad Birdsall's swipe
- * Copyright 2014 Connor Sears
+ * Copyright 2015 Connor Sears
  * Licensed under MIT (https://github.com/twbs/ratchet/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -840,6 +967,7 @@
   var touchMove = false;
   var distanceX = false;
   var toggle    = false;
+  var transformProperty = window.RATCHET.getBrowserCapabilities.transform;
 
   var findToggle = function (target) {
     var i;
@@ -899,13 +1027,13 @@
     e.preventDefault();
 
     if (distanceX < 0) {
-      return (handle.style.webkitTransform = 'translate3d(0,0,0)');
+      return (handle.style[transformProperty] = 'translate3d(0,0,0)');
     }
     if (distanceX > offset) {
-      return (handle.style.webkitTransform = 'translate3d(' + offset + 'px,0,0)');
+      return (handle.style[transformProperty] = 'translate3d(' + offset + 'px,0,0)');
     }
 
-    handle.style.webkitTransform = 'translate3d(' + distanceX + 'px,0,0)';
+    handle.style[transformProperty] = 'translate3d(' + distanceX + 'px,0,0)';
 
     toggle.classList[(distanceX > (toggleWidth / 2 - handleWidth / 2)) ? 'add' : 'remove']('active');
   });
@@ -922,15 +1050,17 @@
     var slideOn     = (!touchMove && !toggle.classList.contains('active')) || (touchMove && (distanceX > (toggleWidth / 2 - handleWidth / 2)));
 
     if (slideOn) {
-      handle.style.webkitTransform = 'translate3d(' + offset + 'px,0,0)';
+      handle.style[transformProperty] = 'translate3d(' + offset + 'px,0,0)';
     } else {
-      handle.style.webkitTransform = 'translate3d(0,0,0)';
+      handle.style[transformProperty] = 'translate3d(0,0,0)';
     }
 
     toggle.classList[slideOn ? 'add' : 'remove']('active');
 
     e = new CustomEvent('toggle', {
-      detail: { isActive: slideOn },
+      detail: {
+        isActive: slideOn
+      },
       bubbles: true,
       cancelable: true
     });

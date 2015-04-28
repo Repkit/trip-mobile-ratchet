@@ -26,11 +26,11 @@ $(document).ready(function () {
 	        '    </ul>'+
 	        '    <div class="input-row">'+
 	        '      <label><span class="pe-7s-map-marker"></span></label>'+
-	        '      <input type="text" name="origin" class="typeahead" placeholder="Origin"/>'+
+	        '      <a class="tab-item" href="#FlightOriginModal"><input id="FlightOrigin" type="text" name="origin" class="typeahead" placeholder="Origin"/></a>'+
 	        '    </div>'+
 	       '     <div class="input-row">'+
 	       '       <label><span class="pe-7s-map-marker"></span></label>'+
-	       '       <input type="text" name="destination" class="typeahead" placeholder="Destination"/>'+
+	       '       <a class="tab-item" href="#FlightDestinationModal"><input id="FlightDestination" type="text" name="destination" class="typeahead" placeholder="Destination"/></a>'+
 	       '     </div>'+
 	       '     <div class="input-row">'+
 	       '       <label><span class="pe-7s-date"></span> <span class="input-label">Dep.</span></label>'+
@@ -86,6 +86,43 @@ $(document).ready(function () {
 	      '      <div class="content-padded">&nbsp;</div>'+
 	      '  </form>'+
 	      '</div>';
+	      
+    	var flightOriginModal = 
+	        '<div id="FlightOriginModal" class="modal">'+
+		    '  <header class="bar bar-nav">'+
+		    '    <span class="icon pe-7s-map-marker pe-2x pe-va pull-left"></span>'+
+		    '    <a class="icon icon-close pull-right" href="#FlightOriginModal"></a>'+
+		    '    <h1 class="title">Origin</h1>'+
+		    '  </header>'+
+		    '  <div class="bar bar-standard bar-header-secondary">'+
+		    '    <form class="input-group">'+
+		    '        <input id="tmpFlightOrigin" type="text" placeholder="Origin" class="flight-location">'+
+		    '    </form>'+
+		    '  </div>'+
+		    '	<div class="content home">'+
+		    '		<div class="topcoat-list__container scroller" style="top:138px;">'+
+    		'			<ul class="topcoat-list list location-list"></ul>'+
+			'		</div>'+
+			'	</div>'+
+		    '</div>';
+	    var flightDestinationModal = 
+	        '<div id="FlightDestinationModal" class="modal">'+
+		    '  <header class="bar bar-nav">'+
+		    '    <span class="icon pe-7s-map-marker pe-2x pe-va pull-left"></span>'+
+		    '    <a class="icon icon-close pull-right" href="#FlightDestinationModal"></a>'+
+		    '    <h1 class="title">Destination</h1>'+
+		    '  </header>'+
+		    '  <div class="content">'+
+		    '    <form class="input-group">'+
+		    '        <input id="tmpFlightDestination" type="text" placeholder="Destination" class="flight-location">'+
+		    '    </form>'+
+		    '	<div class="topcoat-list__container scroller" style="top:138px;">'+
+    		'		<ul class="topcoat-list list location-list"></ul>'+
+			'	</div>'+
+		    '  </div>'+
+		    '</div>';
+	    html += flightOriginModal + flightDestinationModal;
+
 
 	      $('#content').html(html);
 
@@ -154,9 +191,11 @@ $(document).ready(function () {
 	$("body").on('toggle', "#roundtrip-toogle", function (e) {
 		$('#roundtrip').val(e.originalEvent.detail.isActive);
 	});
+	
 	$("body").on('toggle', "#flightclass-toogle", function (e) {
 		$('#flightclass').val(e.originalEvent.detail.isActive);
 	});
+	
 	$("body").on('toggle', "#directflights-toogle", function (e) {
 		$('#directflights').val(e.originalEvent.detail.isActive);
 	});
