@@ -26,11 +26,15 @@ $(document).ready(function () {
 	        '    </ul>'+
 	        '    <div class="input-row">'+
 	        '      <label><span class="pe-7s-map-marker"></span></label>'+
-	        '      <a class="tab-item" href="#FlightOriginModal"><input id="FlightOrigin" type="text" name="origin" class="typeahead" placeholder="Origin"/></a>'+
-	        '    </div>'+
+	        '      <a class="tab-item" href="#FlightOriginModal"><input id="FlightOrigin" type="text" name="origin[cityCountry]" class="typeahead" placeholder="Origin"/></a>'+
+	        '      <input id="FlightOriginCityId" type="hidden" name="origin[cityId]"/>'+
+	       '       <input id="FlightOriginLocationId" type="hidden" name="origin[locationId]"/>'+
+	       '    </div>'+
 	       '     <div class="input-row">'+
 	       '       <label><span class="pe-7s-map-marker"></span></label>'+
-	       '       <a class="tab-item" href="#FlightDestinationModal"><input id="FlightDestination" type="text" name="destination" class="typeahead" placeholder="Destination"/></a>'+
+	       '       <a class="tab-item" href="#FlightDestinationModal"><input id="FlightDestination" type="text" name="destination[cityCountry]" class="typeahead" placeholder="Destination"/></a>'+
+	       '       <input id="FlightDestinationCityId" type="hidden" name="destination[cityId]"/>'+
+	       '       <input id="FlightDestinationLocationId" type="hidden" name="destination[locationId]"/>'+
 	       '     </div>'+
 	       '     <div class="input-row">'+
 	       '       <label><span class="pe-7s-date"></span> <span class="input-label">Dep.</span></label>'+
@@ -97,14 +101,16 @@ $(document).ready(function () {
 		    '  <div class="bar bar-standard bar-header-secondary">'+
 		    '    <form class="input-group">'+
 		    '        <input id="tmpFlightOrigin" type="text" placeholder="Origin" class="flight-location">'+
+		    '        <input id="tmpFlightOriginListId" type="hidden">'+
 		    '    </form>'+
 		    '  </div>'+
 		    '	<div class="content home">'+
 		    '		<div class="topcoat-list__container scroller" style="top:138px;">'+
-    		'			<ul class="topcoat-list list location-list"></ul>'+
+    		'			<ul id="tmpFlightOriginList" class="topcoat-list list location-list"></ul>'+
 			'		</div>'+
 			'	</div>'+
 		    '</div>';
+
 	    var flightDestinationModal = 
 	        '<div id="FlightDestinationModal" class="modal">'+
 		    '  <header class="bar bar-nav">'+
@@ -112,15 +118,19 @@ $(document).ready(function () {
 		    '    <a class="icon icon-close pull-right" href="#FlightDestinationModal"></a>'+
 		    '    <h1 class="title">Destination</h1>'+
 		    '  </header>'+
-		    '  <div class="content">'+
+		    '  <div class="bar bar-standard bar-header-secondary">'+
 		    '    <form class="input-group">'+
 		    '        <input id="tmpFlightDestination" type="text" placeholder="Destination" class="flight-location">'+
+		    '        <input id="tmpFlightDestinationListId" type="hidden">'+
 		    '    </form>'+
-		    '	<div class="topcoat-list__container scroller" style="top:138px;">'+
-    		'		<ul class="topcoat-list list location-list"></ul>'+
-			'	</div>'+
 		    '  </div>'+
+		    '	<div class="content home">'+
+		    '		<div class="topcoat-list__container scroller" style="top:138px;">'+
+    		'			<ul id="tmpFlightDestinationList" class="topcoat-list list location-list"></ul>'+
+			'		</div>'+
+			'	</div>'+
 		    '</div>';
+	    
 	    html += flightOriginModal + flightDestinationModal;
 
 
@@ -133,13 +143,13 @@ $(document).ready(function () {
 		'<a class="tab-item" href="#UAModal">'+
         '  <span class="pe-7s-user pe-2x pe-va"></span>'+
         '</a>'+
-        '<a class="tab-item" href="#">'+
+        '<a class="tab-item" href="javascript:void(0)">'+
         '  <span class="pe-7s-like2 pe-2x pe-va"></span>'+
         '</a>'+
-        '<a class="tab-item active" href="#">'+
+        '<a class="tab-item active" href="javascript:void(0)">'+
         '  <span class="pe-7s-plane pe-2x pe-va"></span>'+
         '</a>'+
-        '<a class="tab-item" href="#">'+
+        '<a class="tab-item" href="javascript:void(0)">'+
         '  <span class="pe-7s-home pe-2x pe-va"></span>'+
         '</a>';
         var modal = 

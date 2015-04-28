@@ -2,10 +2,12 @@
 $(document).ready(function () {
 	"use strict";
 	fetchFlights();
+	window.addEventListener('push', showpage);
 });
 
 function fetchFlights(){
 
+	$('.breadcrump').html('<i class="pe-7s-science pe-spin"></i> searching...');
 	//define local vars
 	var fligths = flightAdapter.fetchAll(),
 		cnt = fligths.length,
@@ -78,4 +80,16 @@ function fetchFlights(){
         '<li class="table-view-cell media flight-list-end"></li>'
 	);
 
+	$('.breadcrump').html('Found ' + cnt + ' flights');
+
+};
+
+function showpage(e){
+	if(e.detail.state.url.indexOf('list.html') > -1){
+		fetchFlights();
+	}else if(e.detail.state.url.indexOf('index.html') > -1){
+		window.location.href = e.detail.state.url;
+	}else{
+		console.log(e.detail.state.url);
+	}
 }
