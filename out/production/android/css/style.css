@@ -1,0 +1,42 @@
+img.center{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.input-row label + select {
+  float: right;
+  width: 65%;
+  padding-left: 0;
+  margin-bottom: 0;
+  border-bottom: 0;
+
+  font:inherit; /*keep font style*/
+  height:35px; /*force same height as inputs*/
+
+  /* remove border, background and inset shadow */
+  border:none;
+  background-color:transparent;
+  box-shadow:none;
+}
+
+.info-text{
+  color: #8f8f94;
+}
+
+.small{
+  font-size: 47%;
+}
+.input-label{
+  font-size: 85%;
+}
+
+/*
+.icon-logo{
+    background: transparent url(../img/logo.png);
+    background-repeat: no-repeat;
+}
+.media-object {
+  width: 42px;
+  height: 42px;
+}*/
